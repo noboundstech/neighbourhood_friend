@@ -1,0 +1,30 @@
+{
+  "name": "neighbourhood_friend",
+  "version": "1.0.0",
+  "description": "neighbour hood friend is an application to send offer to neighby people",
+  "main": "app.js",
+  "scripts": {
+    "test": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/noboundstech/neighbourhood_friend.git"
+  },
+  "keywords": [
+    "neighbourhood"
+  ],
+  "author": "Firdoue alam/Sukalyan degsingh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/noboundstech/neighbourhood_friend/issues"
+  },
+  "homepage": "https://github.com/noboundstech/neighbourhood_friend#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "compression": "^1.6.2",
+    "express": "^4.14.0",
+    "helmet": "^3.2.0",
+    "morgan": "^1.7.0",
+    "path": "^0.12.7"
+  }
+}
