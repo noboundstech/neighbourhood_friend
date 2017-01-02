@@ -1,0 +1,329 @@
+
+
+
+
+<!-- Main header started -->
+<div class="main-header">
+    <div class="container-fluid">
+        <a href="#/dashboard" class="btn btn-default pull-left" style="margin-top:10px"><span class="fa fa-long-arrow-left"></span></a>
+       
+        <a class="pull-right" ng-click="logout_user();"  style="margin-top:10px"> LOGOUT</a>
+    </div>
+</div>
+<!-- Main header ended --> 
+<!-- Main content box started -->
+<div id="wrapper" class="container-fluid"> 
+   <!-- Main content box started -->
+    <div id="wrapper" class="container-fluid"> 
+        <!-- Sidebar  started -->
+        <div id="side-bar" class=" ">
+            <h4 class="customer-list">Customer Online : </h4>
+             <input ng-model="searchText" placeholder="search friends" >
+            <!-- userlist  started -->
+            <ul class="sidebar-nav" style="cursor:pointer; border-top:1px solid;padding-bottom:10px; !important;margin-top:10px;margin-bottom:10px">
+              
+                <li ng-repeat="user in getFriendList | orderBy : 'fullName'  | filter:searchText"  ng-click="selectCustomer(user);"  style="cursor:pointer; border-bottom:1px solid;padding-bottom:10px; margin-top:10px"> 
+                    <div> 
+                        <img ng-src="{{user.profilePicture}}" class="img-circle img-responsive" alt="Cinque Terre">
+                        <div> Name : {{user.fullName}} 
+                            <span ng-if="user.alternateName != ''"> ({{user.alternateName}})
+                        </div>
+
+                        <div> Gender : 
+                            <span ng-if="user.gender == 'male_singular'"> MALE SINGLE</span>
+                            <span ng-if="user.gender == 'female_singular'"> FEMALE SINGLE</span>
+                        </div>
+                        Friend : {{user.isFriend | uppercase}}
+                    </div>
+
+                </li>
+            </ul>
+            <!-- userlist  ended -->
+        </div>
+    <!-- Sidebar  ended --> 
+    </div>
+    <!-- right-panel started -->
+    <div class="right-panel container-fluid">
+        <div class="row"> 
+            <!-- chat section started -->
+            <div class="loader_angular" ng-show="Loader"></div>
+            <div class="col-md-12 zone">
+                <h4 class="chat-heading">
+                    <span class="fa fa-comments chat-bubble">
+                        </span>
+                            Coversation With&nbsp;&nbsp; <strong>{{user_details.fullName}}</strong>
+                        </span>
+                    </span>
+                </h4>
+                <ul class="messages nav" id="style-3" id="bottom">
+                    <li class="message" ng-repeat="message in chat_details track by $index"  ng-if="send_to_customer == message.cust_id" >
+                        <div class="avatar" ng-if="csr_id != message.sender_id">
+                            <img src="img/user.png" width="40" height="44" class="avatar-box img-circle" >
+                        </div>
+                        <div class="arrow_box-left" ng-if="csr_id != message.sender_id">
+                            <div class="text">{{message.message}}
+                            </div>
+                        </div>
+                        <div class="arrow_box-right"  ng-if="csr_id == message.sender_id">
+                            <div class="text"> {{message.message}}
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <form class="reply-msg">
+                    <div class="form-group">
+
+                        <textarea rows="4" class="form-control"  cols="50" placeholder="Type your message ..." value="type" ng-model="fb_message" id="sending_message"></textarea>
+                    </div>
+                    <div class="form-group buttons-all">
+                        <button class="btn btn-primary send" ng-click="sendChatMessage();">
+                            Send
+                            <span class="icon-reply">
+                                <img src="img/icon-send.png" widht="11" height="13">
+                            </span>
+                        </button>
+                        <button class="btn btn-primary clear" ng-click="clearTextMessage();">
+                            Clear
+                            <span class="icon-reply">
+                                <img src="img/icon-clear.png" widht="11" height="10">
+                            </span>
+                        </button>
+                    </div>
+                </form>
+            </div><!-- chat section ended --> 
+            <!-- user profile section started -->
+            <div class="col-md-5 user-profile" ng-show="show_cust">
+                <!-- user profile started -->
+                <div class="row">
+                    <div class="col-md-12 user-box profile-section">
+                        <div class="col-md-7 customer-pro">
+                           <h4 class="profile-details">
+                                <span class="profile-section">
+                                     <img src="img/user-profile-2.png" width="70" height="78" class=" user-image img-circle">
+                                </span>
+                                Customer Details  :
+                            </h4>
+                        </div>
+                        <div class="col-md-5 name-details">        
+                            <h3 class="customer-name">
+                                Name :
+                            </h3>
+                                {{customer_details.memberFirstName +' '+ customer_details.memberLastName}}
+                            <p ng-if="customer_details != ''" style="font-size:14px" class="profile-info-details chatid">
+                                WECHATID :{{customer_details.memberWechatId}}
+                            </p>
+                            
+                        </div>
+                        <div class="col-md-12 customer-info">
+                                      
+                            <p ng-if="customer_details != ''" style="font-size:14px" class="profile-info-details">
+                                OCCUPATION :{{customer_details.memberOccupation}}
+                            </p>
+                            <p ng-if="customer_details != ''" style="font-size:14px" class="profile-info-details">
+                                HOBBY :{{customer_details.memberHobby}}
+                            </p>
+                             <p ng-if="customer_details != ''" style="font-size:14px" class="profile-info-details">
+                                INFO :{{customer_details.memberInfo1}} {{customer_details.memberInfo2}} {{customer_details.memberInfo3}}
+                            </p>  
+                        </div>     
+                    </div>
+                </div>
+                <!-- user profile ended --> 
+                <!-- tag section started -->
+                <div class="row customer-tags">
+                    <div class="col-md-12 user-box tag-section">
+                        <h5 class="tag-details">
+                            <span class="glyphicon glyphicon-tags profile-section">
+                            </span>
+                            Customer Tag Details:
+                        </h5>
+                        <h6 class="previous-tag">
+                             Previous Tag : 
+                        </h6>
+                        <div class="col-md-12 col-sm-12 tag-box">
+                            <div class="loader_angular" ng-show="show_remove_tag_loader"></div>
+                            <div class="tag-holder">
+                                <span ng-repeat="tag in customer_tag">
+
+                                    <span class="tag-style">
+                                           {{$index+1}}. {{tag.tagDesc}}
+                                            <a href="" ng-click="removeCustomerTag(tag.tagDesc,tag.tagId)">
+                                            <span class="fa fa-close " style="color:#FF6347"  ></span>
+                                            </a>
+                                    </span>
+                                      
+                                </span>
+                            </div>
+                            
+                            <div class="loader_angular" ng-show="show_remove_tag_loader"></div>
+                        </div>
+                         <div class="col-md-12 col-sm-12" style="color:red"> 
+                            {{add_tag_error}}
+                            <div class="loader_angular" ng-show="show_add_tag_loader"></div>
+                        </div>
+                        <div class="all-tag col-md-9 col-sm-9">
+                            <select chosen multiple ng-model="add_customer_tag" ng-options="s.tagDesc for s in tags" style="width:200px;"  placeholder-expression="Please select tag">
+                            </select>
+                        </div>
+                        <span class="col-md-3 col-sm-3 add-tag">
+                            <button class="btn btn-default tag-button-add" ng-click="addNewTag();"> Add a tag </button>
+                        </span>
+                    </div>
+                </div>
+                <!-- tag section ended --> 
+                <div class="row map-details" ng-if="search_type == 'distance'">
+                    <div class="col-md-12 user-box map-section">
+                       
+                        <h4 class="location-map">
+                           <span class="glyphicon glyphicon-map-marker profile-section">
+                               
+                            </span>
+                            Customer Location Details :
+                        </h4>
+                    <!-- Nav tabs -->
+                        <ul class="nav nav-tabs map" role="tablist">
+                            <li ng-class="{active:show_user_location =='current'}">
+                                <a aria-controls="home" ng-click="changeLocation('current');" style="cursor:pointer">Current location </a>
+                            </li>
+                            <li  ng-class="{active:show_user_location =='choosen'}">
+                                <a ng-click="changeLocation('choosen');" style="cursor:pointer">Choose a location </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row map-details" ng-if="search_type == 'distance'">
+                    <div class="col-md-10 user-box map-section">
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div ng-if="show_user_location =='current'">
+                                <div style="height: 140px;width:100%;">
+                                     <bing-map
+                                        credentials="'AjZ0wB-x_wfUhjERvFMimAGIUbgHM7uRTKubZcmsbnE_-DSE49gBI53Ts9ClaeT5'"
+                                        center="mapOptions.center"
+                                        zoom="mapOptions.zoom"
+                                        mapType="mapOptions.mapType"
+                                        scrollwheel= false 
+                                        disableZooming= true>
+                                        
+                                        <pushpin
+                                            lat="pushpin.latitude"
+                                            lng="pushpin.longitude"
+                                            options="pushpin.options"
+                                            events="pushpin.events">
+                                        </pushpin>
+                                  
+                                    </bing-map>
+                            
+                                </div>
+                            </div>
+                           
+                        </div>
+                    </div>
+                </div><!-- map-section ended -->
+                <div class="row" ng-if="show_user_location =='choosen'">
+                    <div role="tabpanel" id="find-location" class="col-sm-12" >
+                        <form class="submit-loaction-form">
+                            <input type="text" class="form-control pick-location" ng-model="address.street" placeholder="Street">
+                            <input type="text" class="form-control pick-location" ng-model="address.province" placeholder="Province">
+                            <input type="text" class="form-control pick-location" ng-model="address.city" placeholder="City">
+                            <input type="text" class="form-control pick-location" ng-model="address.district" placeholder="District">
+                            <input type="text" class="form-control pick-location" ng-model="address.country" placeholder="Country">
+                            <input type="text" class="form-control pick-location" ng-model="address.postcode" placeholder="zip/postal code">
+                            <div class="loader_angular" ng-show="showSearchByDistanceLoader"></div>
+                            <button type="button" class="btn btn-default submit-location" ng-click="getLatitudeLongitude('address');">
+                                Submit Your Location
+                            </button>
+                        </form>
+                      
+                        <div class="input-group"  ng-if="show_user_location =='choosen'">
+                            <input type="text"  places-auto-complete gm-places-autocomplete="autocompleteOptions " 
+                                ng-model="autocompleteModel" 
+                                id="address_autocomplete"
+                                 class="form-control pick-location" 
+                                 size="400"
+                                 component-restrictions="{country:'in'}"/>
+                        </div>
+                    </div>
+                </div>
+                <!--Merchant Offer section started -->
+                <div class="row">
+                    <!--  ng-if="search_type == 'merchant'" -->
+                    <div class="col-md-12 user-box merchant-section" >
+                        <h4 class="merchant-offer ">Merchant Offer Details : </h4>
+                        <div class="input-group">
+                            <input type="number" class="form-control" placeholder="Search by distance" ng-model="search_by_distance_filter"  ng-show="search_type == 'distance'">
+
+                            <input type="text" class="form-control" placeholder="Search by merchant" id="search_by_merchant_filter" ng-model="search_by_merchant_filter" ng-show="search_type == 'merchant'">
+
+                            <input type="text" class="form-control" placeholder="Search by offer" id="search_by_offer_filter" ng-model="search_by_offer_filter" ng-show="search_type == 'offer'">
+                            <span class="input-group-btn">
+                                <button type="submit" name="search" id="search-btn" class="btn btn-flat">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                                <div class="loader_angular" ng-show="showSearchMerchantTagLoader"></div>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-12 user-box merchant-section">
+                        <p>
+                            <input type="radio" name="radio_search" value="distance" ng-model="search_type" ng-click="searchType('distance');"> Search by Distance: 
+                            <input type="radio" name="radio_search" value="merchant"  ng-model="search_type" ng-click="searchType('merchant');"> Search by Merchant:
+                             <input type="radio" name="radio_search" value="offer"  ng-model="search_type" ng-click="searchType('offer');"> Search by Offer:
+                        </p>
+                        <form>
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="prices"  ng-show="search_type == 'distance'">
+                                    <ul class="list-group offer-list" id="style-3">
+
+                                        <li class="list-group-item" ng-repeat="dist in merchant_by_location_details | orderBy : '-merch_dist_total'"    ng-show="dist.distance  <= search_by_distance_filter">
+                                            <div>
+                                                <strong> {{dist.merchantName}} ({{dist.distance}})</strong>
+                                            </div>
+                                            <div ng-repeat = "offer in dist.merch_dist_detail">
+                                                <input type="checkbox" name="distance_offer_checkbox[]" value="{{offer.offer_rule_en}}#{{offer.offerId}}" ng-false-value="''" class="distance_offer_checkbox" draggable="true" ondragstart="drag(event)">
+                                                <span  draggable="true" ondragstart="drag(event)" id="{{offer.offer_rule_en}}#{{offer.offerId}}">{{offer.offer_rule_en}} </span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="tab-pane active" id="features"  ng-show="search_type == 'merchant'">
+                                    <ul class="list-group offer-list" id="style-3">
+                                        <li class="list-group-item" ng-repeat="search_merchant in merchant_details | orderBy : '-merch_total'  | filter : search_by_merchant_filter">
+                                            <div>
+                                                <strong> 
+                                                    {{search_merchant.merchantName}} ({{search_merchant.merch_total}})
+                                                </strong>
+                                            </div>
+                                            <div ng-repeat = "merchant_offer in search_merchant.merch_detail">
+                                                 <input type="checkbox" name="merchant_offer_checkbox[]" value="{{merchant_offer.offer_rule_en}}#{{merchant_offer.offerId}}" ng-false-value="''" class="distance_offer_checkbox" draggable="true" ondragstart="drag(event)">
+                                                <span  draggable="true" ondragstart="drag(event)" id="{{merchant_offer.offer_rule_en}}#{{offer.offerId}}">{{merchant_offer.offer_rule_en}} </span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="tab-pane active" id="features"  ng-show="search_type == 'offer'">
+                                    <ul class="list-group offer-list" id="style-3">
+
+                                        <li class="list-group-item" ng-repeat="search_merchant in merchant_details | orderBy : '-merch_total' ">
+                                            <!--
+                                            <div>
+                                                <strong> 
+                                                    {{search_merchant.merchantName}} ({{search_merchant.merch_total}})
+                                                </strong>
+                                            </div>-->
+                                            <div ng-repeat = "merchant_offer in search_merchant.merch_detail | filter : search_by_offer_filter">
+                                                 <input type="checkbox" name="offer_search_checkbox[]" value="'{{merchant_offer.offer_rule_en}}'" ng-false-value="''" class="distance_offer_checkbox" draggable="true" ondragstart="drag(event)">
+                                                <span  draggable="true" ondragstart="drag(event)"  id="{{merchant_offer.offer_rule_en}}#{{offer.offerId}}">{{merchant_offer.offer_rule_en}} </span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--Merchant Offer section ended --> 
+</div>

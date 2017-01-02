@@ -20,9 +20,11 @@
   },
   "homepage": "https://github.com/noboundstech/neighbourhood_friend#readme",
   "dependencies": {
+    "async": "^2.1.4",
     "body-parser": "^1.15.2",
     "compression": "^1.6.2",
     "express": "^4.14.0",
+    "facebook-chat-api": "^1.2.0",
     "helmet": "^3.2.0",
     "jsonwebtoken": "^7.2.1",
     "morgan": "^1.7.0",
