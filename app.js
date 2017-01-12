@@ -44,15 +44,17 @@ app.use(helmet.hsts({
   force: true
 }))
 app.use(function (req, res, next) {
+   res.header('Access-Control-Allow-Headers', 'application/json');
    // add details of what is allowed in HTTP request headers to the response headers
-   // res.header('Access-Control-Allow-Origin', req.headers.origin);
-    res.header("Access-Control-Allow-Origin", "*");
+   res.header('Access-Control-Allow-Origin', req.headers.origin);
+   // res.header("Access-Control-Allow-Origin", "*");
     res.header('Access-Control-Allow-Methods', '*');
    // res.header('Access-Control-Allow-Credentials', false);
     res.header('Access-Control-Max-Age', '586400');
-    res.header('Access-Control-Allow-Headers', '*');
+   
     // the next() function continues execution and will move onto the requested URL/URI
     next();
+
 });
 // adding middleware for nodejs crawl
 //app.use(require('prerender-node').set('prerenderToken', 'RQ5GW4Vh2N7prQ1f3FIc'));
@@ -103,6 +105,7 @@ server.listen(3000, function () {
     var login = require("facebook-chat-api");
     login({email: config.user_name, password: config.password}, function callback (err, api) {
        api.listen(function callback(err, message) {
+        console.log(message);
           if(message)
           {
             var message_type = message.type;
@@ -382,6 +385,8 @@ server.listen(3000, function () {
               });
             insert_document.save(function(err,result)           
             {
+              console.log(err);
+              console.log(result);
               socket_details.emit("new_message",result);
             }); 
           }

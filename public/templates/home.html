@@ -1,7 +1,3 @@
-
-
-
-
 <!-- Main header started -->
 <div class="main-header">
     <div class="container-fluid">
@@ -22,9 +18,12 @@
             <!-- userlist  started -->
             <ul class="sidebar-nav" style="cursor:pointer; border-top:1px solid;padding-bottom:10px; !important;margin-top:10px;margin-bottom:10px">
               
-                <li ng-repeat="user in getFriendList | orderBy : 'fullName'  | filter:searchText"  ng-click="selectCustomer(user);"  style="cursor:pointer; border-bottom:1px solid;padding-bottom:10px; margin-top:10px"> 
+                <li ng-repeat="user in getFriendList | orderBy : 'fullName'  | filter:searchText"  ng-click="selectCustomer(user,$index);"  style="cursor:pointer; border-bottom:1px solid;padding-bottom:10px; margin-top:10px"> 
                     <div>
-                        <img ng-src="{{user.profilePicture}}" class="img-circle img-responsive" alt="Cinque Terre">
+                        <div>
+                            <img ng-src="{{user.profilePicture}}" class="img-circle img-responsive" alt="Cinque Terre">
+                            <span class="notification pull-right" ng-if="user.notification > 0 ">{{user.notification}}</span>
+                        </div>
                         <div> Name : {{user.fullName}} 
                             <span ng-if="user.alternateName != ''"> ({{user.alternateName}})
                         </div>
@@ -58,22 +57,47 @@
                 <ul class="messages nav" id="style-3" id="bottom"  scroll-glue>
                     <li class="message" ng-repeat="message in userFbMessage">
                         <div ng-if="message.send_or_receive == 'receive'">
+                            <!-- div for text message -->
                             <div class="arrow_box-left" ng-if="message.type == 'message'">
                                 <div class="text">{{message.message_details.body}}
                                 </div>
                             </div>
+                            <!-- div for sticker -->
                             <div class="arrow_box-left" ng-if="message.type == 'sticker'">
                                 <div ng-repeat = "sticker in message.attachment">
                                     <img ng-src="{{sticker.url}}" height="{{sticker.height}}" width="{{sticker.width}}" frameCount="{{sticker.frameCount}}" frameRate="{{sticker.frameRate}}" framesPerRow="{{sticker.framesPerRow}}" framesPerCol="{{sticker.framesPerCol}}">
                                 </div>
                             </div>
+                            <!-- div for image -->
                             <div class="arrow_box-left" ng-if="message.type == 'photo'">
                                <div ng-repeat = "photo in message.attachment">
                                     <img ng-src="{{photo.previewUrl}}" height="{{photo.previewHeight}}" width="{{photo.previewWidth}}">
                                 </div>
                             </div>
+                            <!-- div for share  fbsharing,location sharing and remainder sharing -->
                             <div class="arrow_box-left" ng-if="message.type == 'share'">
-                               <div ng-repeat = "share in message.attachment">
+                                <!-- div for location sharing -->
+                               <div ng-repeat = "share in message.attachment" ng-if="share.width=='545'">
+                                    <a ng-href="{{share.facebookUrl}}" target="_blank">
+                                        <img ng-src="{{share.image}}" ng-if="share.width=='545'">
+                                        <div class="text">
+                                            {{share.title}}
+                                            <br>
+                                            {{share.description}}
+                                        </div>
+                                       
+                                    </a>
+                                </div>
+                                <!-- div for remainder sharing -->
+                                <div ng-repeat = "share in message.attachment" ng-if="share.width==null">
+                                    <div class="text">
+                                        {{share.title}}
+                                        <br>
+                                        {{share.description}}
+                                    </div>
+                                </div>
+                                <!-- div for facebook sharing-->
+                                <div ng-repeat = "share in message.attachment" ng-if="share.width=='0'">
                                     <a ng-href="{{share.facebookUrl}}" target="_blank">
                                         <div class="text">
                                             {{share.title}}
@@ -84,11 +108,13 @@
                                     </a>
                                 </div>
                             </div>
+                            <!--div for animated image like gif -->
                             <div class="arrow_box-left" ng-if="message.type == 'animated_image'">
                                <div ng-repeat = "gif in message.attachment">
                                     <img ng-src="{{gif.previewUrl}}" height="{{gif.previewHeight}}" width="{{gif.previewWidth}}">
                                 </div>
                             </div>
+                            <!-- div for audio files -->
                             <div class="arrow_box-left" ng-if="message.type == 'file'">
                                <div ng-repeat = "audio in message.attachment">
                                     <audio controls>
@@ -98,14 +124,15 @@
                                     </audio>
                                 </div>
                             </div>
-                            
                         </div>
+                        <!-- showing message which are being send by us -->
                         <div ng-if="message.send_or_receive == 'send'">
                             <div class="arrow_box-right">
                                 <div class="text">{{message.message_details.body}}
                                 </div>
                             </div>
                         </div>
+
                     </li>
                 </ul>
                 <form class="reply-msg"  ng-submit="sendChatMessage();">
