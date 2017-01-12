@@ -1,33 +1,10 @@
-angular.module('project', ['ngRoute','homeController','userController','adminController','offerController','CustomerReportController','ngStorage',
-                          'angularUtils.directives.dirPagination','localytics.directives','ngMap','gm','720kb.datepicker','angularBingMaps'])
+angular.module('project', ['ngRoute','homeController','userController','adminController','offerController','CustomerReportController'
+                          ])
  
  /*
  all constant used in angular js front end
 */
 .constant('APPLICATION_CONSTANT', {
-    default_offer_id          : 22,
-    user_role                 : [{
-                                  "name" : "ADMIN",
-                                  "value" : "Admin"
-                                },
-                                {
-                                  "name" : "CSR",
-                                  "value" : "CSR"
-                                }],
-    user_status               :  [{
-                                  "name" : "Active",
-                                  "value" : "Y"
-                                },
-                                {
-                                  "name" : "IN-ACTIVE",
-                                  "value" : "N"
-                                }],
-    default_user_type         : "CSR",
-    admin_section             : "ADMIN SECTION",
-    offer_segment_view        : "OFFER SEGMENT VIEW",
-    member_segment_view       : "MEMBER SEGMENT VIEW",
-    offer_display_view        : "OFFER DISPLAY VIEW",
-    merchant_display_view     : "MERCHANT DISPLAY VIEW"
 })
 
 .config(function($routeProvider) {
@@ -45,58 +22,11 @@ angular.module('project', ['ngRoute','homeController','userController','adminCon
   $rootScope.logout_user = function(){
 
     // call an api and send all message to server
-
-    localStorage.removeItem("last_login");
-    localStorage.removeItem("user_type");
-    localStorage.removeItem("csr_name");
-    localStorage.removeItem("char_message");
-    localStorage.removeItem("user_details");
-    localStorage.removeItem("csr_id");
-    localStorage.removeItem("customer_csr_name");
-    localStorage.removeItem("token");
-    localStorage.removeItem("user_role");
     $location.url("");
   }
 
-  $rootScope.authenticateUser = function()
-  {
-    if(typeof localStorage.getItem("token") == 'undefined' || localStorage.getItem("token") == null || localStorage.getItem("token") == '')
-    {
-      alert("Please login again.");
-      $location.url("");
-    }
-  }
-  $rootScope.selected_page_pagination = '20';
-  $rootScope.page_per_pagination = [
-                  {name:'5 per page', value: '5'}, 
-                  {name:'10 per page', value: '10'}, 
-                  {name:'20 per page', value: '20'}, 
-                  {name:'50 per page', value: '50'}, 
-                  {name:'100 per page', value: '100'},     
-              ];
 })
-.directive('googleplace', function() {
-  console.log(" am here");
-    return {
-        require: 'ngModel',
-        link: function(scope, element, attrs, model) {
-            var options = {
-                types: [],
-                rankBy: google.maps.places.RankBy.DISTANCE,
-                radius : 250,
-                componentRestrictions: {country: 'in'}
-            };
-            scope.gPlace = new google.maps.places.Autocomplete(element[0], options);
 
-            google.maps.event.addListener(scope.gPlace, 'place_changed', function() {
-                scope.$apply(function() {
-                  console.log(element.val());
-                    model.$setViewValue(element.val());                
-                });
-            });
-        }
-    };
-})
 .directive('pageHeader', function () {
     return {
          templateUrl: "templates/include/header.html"
@@ -133,4 +63,29 @@ angular.module('project', ['ngRoute','homeController','userController','adminCon
       }
     }
   return factory;
-});
+})
+.filter('trustedAudioUrl', function($sce) {
+    return function(path, audioFile) {
+        return $sce.trustAsResourceUrl(path + audioFile);
+    };
+})
+.directive('schrollBottom', function () {
+  
+  return {
+
+    scope: {
+      schrollBottom: "="
+    },
+    /*
+    link: function (scope, element) {
+      scope.$watchCollection('schrollBottom', function (newValue) {
+        if (newValue)
+        {
+          $(element).scrollTop($(element)[0].scrollHeight);
+        }
+      });
+    }
+    */
+  }
+  
+})

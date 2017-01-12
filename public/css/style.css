@@ -818,7 +818,7 @@ body {
 .main-header {
   background-color: #f9f9f9;
   border: 1px solid #c3c6cf;
-  min-height: 60px;
+  min-height: 50px;
 }
 .navbar-brand {
   margin-top: 0;
@@ -937,7 +937,7 @@ body {
   background: #000;
   position: absolute;
   left: 0;
-  width: 230px;
+ /* width: 230px; */
   background: #7aacbb;
   height: 708px;
   overflow-y: scroll;
@@ -959,7 +959,7 @@ body {
   padding-bottom:10px;
 }
 .sidebar-nav li a {
-  padding-bottom:20px;
+  padding-bottom:10px;
 }
 .round {
   border-radius: 20px;
@@ -1236,15 +1236,16 @@ body {
  
 }
 .messages {
-  height: 270px;
+  min-height: 300px;
+  max-height: 400px;
   overflow-y: scroll;
 }
 .chat-bubble {
   margin-right: 10px;
-  font-size:19px;
+  font-size:16px;
 }
 .message {
-  margin: 8px 30px 30px 20px;
+  margin: 5px 20px 20px 20px;
 }
 .arrow_box-left {
   text-align:left;
@@ -1282,7 +1283,7 @@ body {
   background: #207ec7;
   border: 0px;
   border-radius: 40px;
-  padding: 20px;
+  padding: 10px;
   width: 70%;
   font-size: 14px;
   box-shadow: 1px 1.732px 9px 0px rgba( 0, 0, 0,.3);
@@ -1323,7 +1324,7 @@ body {
   margin-right: 0px;
 }
 .reply-msg {
-  margin: 25px 20px 0px 40px;
+  margin: 15px 10px 0px 25px;
 }
 .buttons-all {
   margin: 25px 0;
@@ -1909,7 +1910,7 @@ h3.customer-profile-view{
 .chat-heading {
   margin-left: 20px;
   margin-right: 20px;
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 400;
   letter-spacing: 0px;
   
@@ -1921,9 +1922,9 @@ h3.customer-profile-view{
   background: #ffffff;
   border: 0px;
   border-radius: 40px;
-  padding: 15px 0 25px;
+  padding: 10px 0 10px;
   width: 70%;
-  font-size: 16px;
+  font-size: 14px;
   box-shadow: 1px 1.732px 9px 0px rgba( 0, 0, 0,.3);
   left: 80px;
 }
@@ -1950,9 +1951,9 @@ h3.customer-profile-view{
   background: #207ec7;
   border: 0px;
   border-radius: 40px;
-  padding: 15px 0 25px;
+  padding: 10px 0 10px;
   width: 70%;
-  font-size: 16px;
+  font-size: 14px;
   box-shadow: 1px 1.732px 9px 0px rgba( 0, 0, 0,.3);
   left: 10px;
 }

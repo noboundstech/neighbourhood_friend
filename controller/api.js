@@ -41,15 +41,37 @@ router.route('/sendMessage')
 	var response_data 	= {};
 	
 	var login = require("facebook-chat-api");
-	console.log(req.body.message);
-	console.log(req.body.user_details.userID);
-
 	// Create simple echo bot
 	login({email: config.user_name, password: config.password}, function callback (err, api) {
 		console.log(api);
 		api.sendMessage(req.body.message, req.body.user_details.userID);
 		if(err) return console.error(err);
-		res.send("message send");
+		console.log("here");
+		var fb_message = require("model/fb_message");
+
+		var message_details = { 
+									senderID 	: req.body.user_details.userID,
+									body 		: req.body.message,
+									threadID 	: req.body.user_details.userID,
+									messageID 	: req.body.user_details.userID,
+									isGroup		: 0 
+								};
+		var insert_document = new fb_message(
+								{
+									send_or_receive		: "send", // send or receive
+									type 				: "message",
+									message_details 	: message_details,
+									message_to_by		: req.body.user_details.userID,
+									attachments 		: [],
+								});
+
+		insert_document.save(function(err,result)           
+  		{
+  			console.log(err);
+  			console.log(result);
+			res.send("message send");
+  		}); 
+		
 	});
 		
 });
@@ -73,6 +95,18 @@ router.route('/getFriendList')
 		});
 	});
 		
+});
+router.route('/getAllFbMessage')
+.post(function (req, res) {
+ 	
+//	var async 			= require('async');
+	var response_data 	= {};
+	var fb_message = require("model/fb_message");
+	fb_message.find({'message_to_by': req.body.userID}).sort('-created_on').limit(20).exec(function(err, posts){
+		var _ = require("underscore");
+		var send_data = _.sortBy(posts, 'created_on');
+	    res.send(send_data);
+	});
 });
 // api
 module.exports = router;
